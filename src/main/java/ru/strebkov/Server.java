@@ -1,11 +1,11 @@
 package ru.strebkov;
 
 import java.awt.*;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -27,52 +27,54 @@ public class Server {
              // каналы записи и чтения в сокет
              DataOutputStream out = new DataOutputStream(client.getOutputStream());
              DataInputStream in = new DataInputStream(client.getInputStream())
-        ) {
+        ){
 
-            out.writeUTF(question.poll());
-            out.flush();
+                out.writeUTF(question.poll());
+                out.flush();
 
-            List ansver = new List();
+                ArrayList<String> ansver = new ArrayList<>();
 
-            while (!client.isClosed()) {
-                System.out.println("Server написал клиенту");
-                // сервер ждёт  получения данных клиента
-                String entry = in.readUTF();
-                ansver.add(entry);
+                while (!client.isClosed()) {
+                    System.out.println("Server написал клиенту");
+                    // сервер ждёт  получения данных клиента
+                    String entry = in.readUTF();
+                    ansver.add(entry);
 
-                if (entry.equalsIgnoreCase("Нет") || entry.equalsIgnoreCase("нет")) {
-                    out.writeUTF("ок " + ansver.getItem(0) + ", добро пожаловать на Детский сайт\n приятного просмотра");
-                    out.flush();
-                } else if (entry.equalsIgnoreCase("Да") || entry.equalsIgnoreCase("да")) {
-                    out.writeUTF("ок " + ansver.getItem(0) + ", добро пожаловать на Взрослый сайт\n хорошего дня!");
-                    out.flush();
-                } else if (entry.equalsIgnoreCase("М") || entry.equalsIgnoreCase("м")) {
-                    out.writeUTF("Отлично " + ansver.getItem(0) + ", просмотрите эту ссылу '1111111'\n "
-                            + ansver.getItem(0) + " " + question.poll());
-                    out.flush();
-                } else if (entry.equalsIgnoreCase("Ж") || entry.equalsIgnoreCase("ж")) {
-                    out.writeUTF("Отлично  " + ansver.getItem(0) + ", просмотрите эту ссылу '8888888'\n"
-                            + ansver.getItem(0) + " " + question.poll());
-                    out.flush();
-                } else if (entry.equalsIgnoreCase("777")) {
-                    out.writeUTF("Отлично  " + ansver.getItem(0) + ", вы человек\n"
-                            + ansver.getItem(0) + " " + question.poll());
-                    out.flush();
-                } else {
-                    out.writeUTF("Очень приятно " + ansver.getItem(0) + ", " + question.poll());
-                    out.flush();
+                    if (entry.equalsIgnoreCase("Нет") || entry.equalsIgnoreCase("нет")) {
+                        out.writeUTF("ок " + ansver.get(0) + ", добро пожаловать на Детский сайт\n приятного просмотра");
+                        out.flush();
+                    } else if (entry.equalsIgnoreCase("Да") || entry.equalsIgnoreCase("да")) {
+                        out.writeUTF("ок " + ansver.get(0) + ", добро пожаловать на Взрослый сайт\n хорошего дня!");
+                        out.flush();
+                    } else if (entry.equalsIgnoreCase("М") || entry.equalsIgnoreCase("м")) {
+                        out.writeUTF("Отлично " + ansver.get(0) + ", просмотрите эту ссылу '1111111'\n "
+                                + ansver.get(0) + " " + question.poll());
+                        out.flush();
+                    } else if (entry.equalsIgnoreCase("Ж") || entry.equalsIgnoreCase("ж")) {
+                        out.writeUTF("Отлично  " + ansver.get(0) + ", просмотрите эту ссылу '8888888'\n"
+                                + ansver.get(0) + " " + question.poll());
+                        out.flush();
+                    } else if (entry.equalsIgnoreCase("777")) {
+                        out.writeUTF("Отлично  " + ansver.get(0) + ", вы человек\n"
+                                + ansver.get(0) + " " + question.poll());
+                        out.flush();
+                    } else {
+                        out.writeUTF("Очень приятно " + ansver.get(0) + ", " + question.poll());
+                        out.flush();
 
 //                } else {
 //                    out.writeUTF(ansver.getItem(0) + ", ты не ответил на вопрос правильно ");
 //                    out.flush();
+                    }
+
+                    }
+                    System.out.println("Closing connections & channels - DONE.");
+
+                } catch(
+                        IOException e){
+                    e.printStackTrace();
                 }
 
-            }
-            System.out.println("Closing connections & channels - DONE.");
-
-        } catch (
-                IOException e) {
-            e.printStackTrace();
-        }
     }
 }
+// НОВЫЙ ИЗМЕНЕННЫЙ ПРОЕКТ
